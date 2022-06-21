@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>This is the Register Page</h1>
+    <form action="/register" method="post" onsubmit="validate()" id="form">
+        <input type="text" name="firstName" placeholder="Enter Your First Name" value="<%= firstName %>"/>
+        <input type="text" name="lastName" placeholder="Enter Your Last Name" value="<%= lastName %>"/>
+        <input type="text" name="username" placeholder="User Name" value="<%= username %>"/>
+        <input type="text" name="email" placeholder="Email" value="<%= email %>">
+        <input type="password" id="pass" name="password" placeholder="Password" value="<%= password%>"/>
+        <input type="password" id="confPass" name="passwordConf" placeholder="Conform Password" value=""/>
+        <input type="submit"/>
+    </form>
+    <script>
+        if("<%=errorMessage%>" == "UsrFound"){
+            alert("This User Name is already in Use");
+        }
+        else if("<%=errorMessage%>" ==  "EmailFound"){
+            alert("This email is already in Use");
+        }
+        function validate(){
+            var form = document.getElementById('form');
+            var pass = document.getElementById('pass').value;
+            var confPass = document.getElementById('confPass').value;
+            if(pass == confPass){
+                form.submit();
+            }else{
+                alert('Enter the same password in Conform Password')
+            }
+        }
+    </script>
+</body>
+</html>

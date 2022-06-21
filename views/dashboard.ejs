@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #custumUrl{
+            display: none;
+        }
+        #add-bookmark{
+            display: none;
+        }
+        #add{
+            display: none;
+        }
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>This is the dash board</h1>
+    <form action="/dashboard" method="post">
+        <label for="longUrl">Enter the Long Url</label>
+        <br>
+        <input type="text" name = "longUrl" id ="longUrl" placeholder="Enter Long Url">
+        <br>
+        <label for="discription">Enter the Discription</label>
+        <br>
+        <input type="text" name="discription" id="discription" placeholder="Discryption">
+        <br>
+        <label for=checkbox">Do u want a custumizable Url</label>
+        <input type="checkbox" name="checkbox" id="checkbox">
+        <br>
+        <input type="text" name="custumUrl" id="custumUrl" placeholder="Enter the Custom Url">
+        <input type="submit">
+    </form>
+
+    <h1>Book Marks</h1>
+    <form action="/bookmarks" method="post">
+        <label for="baskets">book mark</label>
+        <select name="baskets" id="baskets" >
+          <option value="none">none</option>
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="opel">Opel</option>
+          <option value="audi">Audi</option>
+        </select>
+        <input type="show" value="show">
+        <br>
+        <label for="show">add bookmark</label>
+        <input type="checkbox" name="add-checkbox" id="add-checkbox">
+        <br>
+        <input type="text" name="add-bookmark" id="add-bookmark" placeholder="New Book Mark">
+        <input type="submit" name="add-bookmark" value="add" id="add">
+    </form>
+
+    <h1>User Hash Links</h1>
+    <table>
+        <tr>
+          <th>Discription</th>
+          <th>shortUrl</th>
+          <th>NumberOfClick</th>
+          <th>bookmarks</th>
+        </tr>
+        <% user_hash_links.forEach((item)=>{ %>
+            <tr>
+                <td><%= item.discription %></td>
+                <td>
+                    <a href="/<%= item.shortUrl %>"><%=baseUrl%><%= item.shortUrl%></a>
+                </td>
+                <td><%= item.clicks %></td>
+                <td>
+                    <form action="/">
+                        <label for="baskets">book mark</label>
+                        <select name="baskets" id="baskets">
+                          <option value="volvo">Volvo</option>
+                          <option value="saab">Saab</option>
+                          <option value="opel">Opel</option>
+                          <option value="audi">Audi</option>
+                        </select>
+                        <input type="submit" value="change">
+                        <input type="submit" value="delete">
+                      </form>
+                </td>
+            </tr>
+        <% }) %>
+        <tr>
+        <tr/>
+      </table>
+      <h1>User Custum Links</h1>
+      <table>
+        <tr>
+            <th>Discription</th>
+            <th>shortUrl</th>
+            <th>Clicks By You</th>
+            <th>Over All Clicks</th>
+            <th>bookmarks</th>
+        </tr>
+        <% user_custum_links.forEach((item)=>{ %>
+            <tr>
+                <td><%= item.discription %></td>
+                <td>
+                    <a href="/app/<%= item.custumUrl %>"><%=baseUrl%>app/<%= item.custumUrl%></a>
+                </td>
+                <td><%= item.clicks_by_user %></td>
+                <td><%= item.total_clicks %></td>
+                <td>
+                    <form action="/">
+                        <label for="baskets">book mark</label>
+                        <select name="baskets" id="baskets">
+                          <option value="volvo">Volvo</option>
+                          <option value="saab">Saab</option>
+                          <option value="opel">Opel</option>
+                          <option value="audi">Audi</option>
+                        </select>
+                        <input type="submit" value="change">
+                        <input type="submit" value="delete">
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+      </table>
+    <script>
+        const checkbox = document.getElementById('checkbox');
+        const custumUrl = document.getElementById('custumUrl');
+        checkbox.addEventListener('change',(event)=>{
+            if(checkbox.checked){
+                custumUrl.style.display = "block";
+            }else{
+                custumUrl.style.display = "none";
+            }
+        })
+        if("<%= errorMessage %>" == "UrlExist"){
+            alert("This custum Url Is Already Exists")
+        }
+        // book mark Script
+        const add_checkbox = document.getElementById('add-checkbox');
+        const add_bookmark = document.getElementById('add-bookmark');
+        const add = document.getElementById('add');
+        add_checkbox.addEventListener('change' , (event)=>{
+            if(add_checkbox.checked){
+                add_bookmark.style.display = "block";
+                add.style.display = "block";
+            }else{
+                add_bookmark.style.display = "none";
+                add.style.display = "none";
+            }
+        })
+    </script>
+</body>
+</html>
