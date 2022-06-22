@@ -13,19 +13,11 @@ const app = express();
 app.set("view engine" , "ejs");
 app.set('views ' , "views");
 router.get('/' , middleware , async (req, res , next)=>{
-    const user = req.session.user; // this is the current loged in user
-    // {
-    //     longUrl: 'https://www.codechef.com/',
-    //     shortUrl: 'http://localhost:3000/86rh9lUng',
-    //     description: 'Stack Over Flow',
-    //     submit: 'Save This URL'
-    //   }
+    const user = req.session.user; 
     if(req.session.addUrl){
         console.log('There is a pending work for dash board')
         const addUrlToUsr = req.session.addUrl;
-        console.log(addUrlToUsr);
-        const url_map = await UrlMaps.find({longUrl:addUrlToUsr.longUrl}); // we are doing it because we have to find the shortUrl
-        console.log(url_map);
+        const url_map = await UrlMaps.findOne({longUrl:addUrlToUsr.longUrl}); // we are doing it because we have to find the shortUrl
         const shortUrl = await UserHashLinks.findOne({
             $and:[
                 {username:user.username},
@@ -33,6 +25,8 @@ router.get('/' , middleware , async (req, res , next)=>{
             ]
         })
         if(shortUrl == null){
+            console.log("I am the best");
+            console.log(url_map);
             await UserHashLinks.create({
                 username:user.username,
                 shortUrl:url_map.shortUrl,
