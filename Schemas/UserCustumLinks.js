@@ -5,7 +5,7 @@ const Schema = mongoose.Schema({
         require:true,
         trim:true
     },
-    discription:{
+    description:{
         type:String,
         require:true,
         trim:true
@@ -18,6 +18,11 @@ const Schema = mongoose.Schema({
     longUrl:{
         type:String ,
         require:true , 
+        trim:true
+    },
+    collections:{
+        type:String,
+        require:true,
         trim:true
     },
     clicks_by_user:{

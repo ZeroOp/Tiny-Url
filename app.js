@@ -30,6 +30,11 @@ app.use('/app/' , custumUrlRouter);
 const homeRouter = require('./Routes/homeRouter');
 app.use('/' , homeRouter);
 
+const AddCollections = require('./Routes/addCollections');
+app.use('/addcollections' , AddCollections);
+
+const ChangeCollectionRounter = require('./Routes/ChangeCollectionRoutner');
+app.use('/change_collection' , ChangeCollectionRounter);
 
 // making node server to listen at a port
 app.listen(3000 , ()=>{

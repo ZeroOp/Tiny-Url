@@ -3,6 +3,8 @@ const router = express.Router();
 const session = require('express-session');
 const User = require('../Schemas/User');
 const bcrypt = require('bcrypt');
+const userCollections = require('../Schemas/UserCollections');
+const UserCollections = require('../Schemas/UserCollections');
 router.get('/' , (req,res)=>{
     const payload = {errorMessage:""};
     payload.firstName = ""
@@ -35,8 +37,12 @@ router.post('/' ,async (req,res)=>{
         password:payload.password
     }
     await User.create(data)
-    .then((user)=>{
+    .then(async (user)=>{
         req.session.user = user;
+        await UserCollections.create({
+            username:user.username , 
+            collections:"none"
+        })
     })
     console.log(req.session)
     res.redirect('/dashboard');

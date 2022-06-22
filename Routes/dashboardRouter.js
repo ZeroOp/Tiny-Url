@@ -8,6 +8,7 @@ const UserHashLinks = require('../Schemas/UserHashLinks');
 const UrlMaps = require('../Schemas/UrlMaps')
 const UserCustumLinks = require('../Schemas/UserCustumLinks');
 const baseUrl = "http://localhost:3000/"; 
+const UserCollections = require("../Schemas/UserCollections");
 const app = express();
 app.set("view engine" , "ejs");
 app.set('views ' , "views");
@@ -15,7 +16,8 @@ router.get('/' , middleware , async (req, res , next)=>{
     const user = req.session.user;
     const user_hash_links = await UserHashLinks.find({username:user.username});
     const user_custum_links = await UserCustumLinks.find({username:user.username});
-    const payload = {'user_hash_links':user_hash_links , 'user_custum_links':user_custum_links,'baseUrl':baseUrl , errorMessage:"" };
+    const user_collections = await UserCollections.find({username:user.username});
+    const payload = {'user_hash_links':user_hash_links , 'user_custum_links':user_custum_links,'baseUrl':baseUrl , errorMessage:"" , 'user_collections':user_collections };
     res.render('dashboard' , payload);
 })
 router.post('/' ,middleware , async (req,res,next)=>{
@@ -27,11 +29,11 @@ router.post('/' ,middleware , async (req,res,next)=>{
         // this is where the custm links are handled
         const url_custum_links = await UserCustumLinks.findOne({custumUrl:payload.custumUrl.trim()});
         if(url_custum_links){
-            // custumUrl is already in use
            payload.errorMessage = "UrlExist";
            payload.user_hash_links = await UserHashLinks.find({username:user.username});
            payload.user_custum_links = await UserCustumLinks.find({username:user.username});
            payload.baseUrl = baseUrl;
+           payload.user_collections = await UserCollections.find({username:user.username});
            return res.render('dashboard',payload);
         }
         //here we have to create the custum url
@@ -39,12 +41,9 @@ router.post('/' ,middleware , async (req,res,next)=>{
             username:user.username,
             custumUrl:payload.custumUrl.trim(),
             longUrl:payload.longUrl,
-            discription:payload.discription
+            description:payload.description,
+            collections:"none"
         })
-        .then((custumUrl)=>{
-            console.log("custome Url has been created Successfull");
-        })
-        console.log("We have to create a custum url");
         return res.redirect('/dashboard');
     }
     // We have to create the random Hash Url
@@ -57,14 +56,13 @@ router.post('/' ,middleware , async (req,res,next)=>{
                 {shortUrl:link.shortUrl}
             ]
         });
-        console.log(user_hash_links)
-        console.log(user);
         // we are creating the row if the user doesn't have the same link
         if(user_hash_links == null){
             await UserHashLinks.create({
                 username:user.username,
                 shortUrl:link.shortUrl,
-                discription:payload.discription
+                discription:payload.discription,
+                collections:"none"
             })
             .then(()=>{
                 console.log('user hashlink is inserted');
@@ -79,7 +77,8 @@ router.post('/' ,middleware , async (req,res,next)=>{
             UserHashLinks.create({
                 username:user.username,
                 shortUrl:link.shortUrl,
-                discription:payload.discription
+                description:payload.description,
+                collections:"none"
             })
             .then(()=>{
                 console.log("user hash link is inserted")

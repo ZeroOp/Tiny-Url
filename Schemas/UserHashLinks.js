@@ -10,7 +10,15 @@ const UserHashLinks = mongoose.Schema({
         require:true,
         trim:true
     },
-    discription:String,
+    description:{
+        type:String,
+        trim:true
+    },
+    collections:{
+        type:String,
+        require:true,
+        trim:true
+    },
     clicks:{
         type:Number , 
         default:0
