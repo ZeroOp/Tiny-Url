@@ -13,14 +13,49 @@ const app = express();
 app.set("view engine" , "ejs");
 app.set('views ' , "views");
 router.get('/' , middleware , async (req, res , next)=>{
-    const user = req.session.user;
+    const user = req.session.user; // this is the current loged in user
+    // {
+    //     longUrl: 'https://www.codechef.com/',
+    //     shortUrl: 'http://localhost:3000/86rh9lUng',
+    //     description: 'Stack Over Flow',
+    //     submit: 'Save This URL'
+    //   }
+    if(req.session.addUrl){
+        console.log('There is a pending work for dash board')
+        const addUrlToUsr = req.session.addUrl;
+        console.log(addUrlToUsr);
+        const url_map = await UrlMaps.find({longUrl:addUrlToUsr.longUrl}); // we are doing it because we have to find the shortUrl
+        console.log(url_map);
+        const shortUrl = await UserHashLinks.findOne({
+            $and:[
+                {username:user.username},
+                {shortUrl:url_map.shortUrl}
+            ]
+        })
+        if(shortUrl == null){
+            await UserHashLinks.create({
+                username:user.username,
+                shortUrl:url_map.shortUrl,
+                description:addUrlToUsr.description,
+                collections:"none"
+            })
+        }
+        // we have to free the session variable
+        req.session.addUrl = null;
+    }
+
+
     const user_hash_links = await UserHashLinks.find({username:user.username});
     const user_custum_links = await UserCustumLinks.find({username:user.username});
     const user_collections = await UserCollections.find({username:user.username});
     const payload = {'user_hash_links':user_hash_links , 'user_custum_links':user_custum_links,'baseUrl':baseUrl , errorMessage:"" , 'user_collections':user_collections };
+    
+    console.log(payload);
+    
     res.render('dashboard' , payload);
 })
 router.post('/' ,middleware , async (req,res,next)=>{
+    console.log(req.body);
     const payload = req.body;
     const user = req.session.user; 
     if(payload.custumUrl){

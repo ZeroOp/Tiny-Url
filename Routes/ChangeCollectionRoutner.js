@@ -7,10 +7,12 @@ const UserHashLinks = require('../Schemas/UserHashLinks');
 router.post('/' ,async (req,res)=>{
     const user = req.session.user;
     const payload = req.body;
+    console.log(payload);
     const urlLink = payload.Url;
     if(payload.action == "change"){
         if(payload.shortUrl == 'y'){
             console.log("hi")
+            console.log(urlLink)
             const user_hash_link = await UserHashLinks.findOne({
                 $and:[
                     {username:user.username},

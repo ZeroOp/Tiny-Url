@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const session = require('express-session')
 const bodyparser = require('body-parser')
 const DataBase = require('./database')
+const path = require('path')
 const app = express();
 
 app.use(session({
@@ -11,6 +12,7 @@ app.use(session({
     saveUninitialized:false
 }))
 
+app.use(express.static(path.join(__dirname , 'public'))); 
 app.set("view engine" , "ejs");
 app.use(bodyparser.urlencoded({extended:true}));
 
