@@ -14,7 +14,8 @@ app.set("view engine" , "ejs");
 app.set('views ' , "views");
 router.get('/' , middleware , async (req, res , next)=>{
     const user = req.session.user; 
-    if(req.session.addUrl){
+    console.log(req.session);
+    if(req.session && req.session.addUrl != null && req.session.addUrl.longUrl){
         console.log('There is a pending work for dash board')
         const addUrlToUsr = req.session.addUrl;
         const url_map = await UrlMaps.findOne({longUrl:addUrlToUsr.longUrl}); // we are doing it because we have to find the shortUrl
@@ -25,7 +26,6 @@ router.get('/' , middleware , async (req, res , next)=>{
             ]
         })
         if(shortUrl == null){
-            console.log("I am the best");
             console.log(url_map);
             await UserHashLinks.create({
                 username:user.username,
@@ -63,7 +63,7 @@ router.post('/' ,middleware , async (req,res,next)=>{
            payload.user_custum_links = await UserCustumLinks.find({username:user.username});
            payload.baseUrl = baseUrl;
            payload.user_collections = await UserCollections.find({username:user.username});
-           return res.render('dashboard',payload);
+           return res.render('index',payload);
         }
         //here we have to create the custum url
         await UserCustumLinks.create({
