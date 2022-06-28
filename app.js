@@ -6,6 +6,8 @@ const DataBase = require('./database')
 const path = require('path')
 const app = express();
 
+const port = 3000;
+
 app.use(session({
     secret:"Hello World",
     resave:true,
@@ -45,6 +47,6 @@ const ChangeCollectionRounter = require('./Routes/ChangeCollectionRoutner');
 app.use('/change_collection' , ChangeCollectionRounter);
 
 // making node server to listen at a port
-app.listen(3000 , ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log('server is running');
 })
