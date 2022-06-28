@@ -50,22 +50,19 @@
       </div>
 
       <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
-        <form action="">
-          <div class = "row justify-content-end">
-            <div class = "col-md-2">
-                <input type="submit" name="submit" value="LOGIN" style="width:70%; height:50px; border-radius:5px; border:none;">
-            </div>
-
-            <div class = "col-md-2">
-                <input type="submit" name="submit" value="SIGNUP" style="width:70%; height:50px; border-radius:5px; border:none;">
-            </div>
-        </div>
-        </form>
+        <div class = "row justify-content-end">
+          <select name="dropDown" id="dropDown" style="width:150px; height: 50px; margin-right: 50px;" >
+            <option value="Account" style="height:50px;font-size:15px">Acoount</option>
+            <option value="/dashboard" style="height:50px;font-size:15px">Dashboard</option>
+            <option value="/login" style="height:50px;font-size:15px">LogIn</option>
+            <option value="/register" style="height:50px;font-size:15px">Registers</option>
+            <option value="/logout" style="height:50px;font-size:15px">LogOut</option>
+         </select>
+       </div>
 
         <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
           <h1>Tiny Link</h1> 
         </div>
-
         <div class="formbg-outer">
           <div class="formbg">
 
@@ -121,6 +118,16 @@
         const shortLink =document.getElementById('shortLink');
         shortLink.value = "<%= shortUrl %>"
     }
+
+    var dropDownValue = document.getElementById("dropDown");
+
+    dropDownValue.onchange = function() {
+      if (this.selectedIndex !== 0) {
+        window.location.href = this.value;
+      }
+    };
+
+    localStorage.clear();
   </script>
 
 

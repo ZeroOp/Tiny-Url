@@ -23,7 +23,6 @@ router.post('/', middleware, async (req,res,next)=>{
         payload.shortUrl = "";
         const longUrl = req.body.longUrl;
         if(validate(longUrl)){
-            console.log("This is a valid url");
             const url = await UrlMaps.findOne({'longUrl':longUrl});
             if(url){
                 payload.shortUrl = baseUrl  + url.shortUrl;
@@ -38,7 +37,6 @@ router.post('/', middleware, async (req,res,next)=>{
             }
             return res.render('index' ,payload );
         }
-        console.log("This is invalide link");
         payload.errorMessage = "InValidUrl";
         return res.render('index' , payload);
     }
@@ -68,8 +66,6 @@ router.get('/:shortUrl',async (req,res,next)=>{
     const shortUrl = req.params.shortUrl;
     const url = await UrlMaps.findOne({'shortUrl':shortUrl});
     if(url){
-        console.log('session user');
-        console.log(user);
         if(user){
             const user_with_this_url = await UserHashLinks.findOne({
                 $and:[
@@ -79,7 +75,6 @@ router.get('/:shortUrl',async (req,res,next)=>{
             });
             if(user_with_this_url){
                 user_with_this_url.clicks++;
-                console.log(user_with_this_url);
                 await user_with_this_url.save();
             }
         }

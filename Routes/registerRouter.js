@@ -28,7 +28,6 @@ router.post('/' ,async (req,res)=>{
         else payload.errorMessage = "UsrFound";
         return res.render('register' , payload);
     }
-    console.log(`this is the password`+payload.password);
     var data = {
         firstName:payload.firstName, 
         lastName:payload.lastName,
@@ -44,7 +43,6 @@ router.post('/' ,async (req,res)=>{
             collections:"none"
         })
     })
-    console.log(req.session)
     res.redirect('/dashboard');
 })
 module.exports = router;

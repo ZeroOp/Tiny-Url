@@ -1,0 +1,272 @@
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard</title>
+  <link rel="stylesheet" type="text/css" href="./static/style2.css">
+  <style>
+        #custumUrl{
+            display: none;
+        }
+        #add_collection{
+            display: none;
+        }
+        #add{
+            display: none;
+        }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 90%;
+    }
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: center;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-root">
+    <div class="box-root flex-flex flex-direction--column" style="min-height: 100vh;flex-grow: 1;">
+      <div class="loginbackground box-background--white padding-top--64">
+        <div class="loginbackground-gridContainer">
+          <div class="box-root flex-flex" style="grid-area: top / start / 8 / end;">
+            <div class="box-root" style="background-image: linear-gradient(white 0%, rgb(247, 250, 252) 33%); flex-grow: 1;">
+            </div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 4 / 2 / auto / 5;">
+            <div class="box-root box-divider--light-all-2 animationLeftRight tans3s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 6 / start / auto / 2;">
+            <div class="box-root box-background--blue800" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 7 / start / auto / 4;">
+            <div class="box-root box-background--blue animationLeftRight" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 8 / 4 / auto / 6;">
+            <div class="box-root box-background--gray100 animationLeftRight tans3s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 2 / 15 / auto / end;">
+            <div class="box-root box-background--cyan200 animationRightLeft tans4s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 3 / 14 / auto / end;">
+            <div class="box-root box-background--blue animationRightLeft" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 4 / 17 / auto / 20;">
+            <div class="box-root box-background--gray100 animationRightLeft tans4s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 5 / 14 / auto / 17;">
+            <div class="box-root box-divider--light-all-2 animationRightLeft tans3s" style="flex-grow: 1;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
+        
+        <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
+          <h1>Welcome <%= user_collections[0].username %> !</h1>
+        </div>
+
+        <div class="formbg-outer">
+          <div class="formbg">
+
+            <div class="formbg-inner padding-horizontal--48">
+
+              <form id="stripe-login" method = "post" action = "">
+                
+                <div class="field padding-bottom--24">
+                  <input type="text" name = "longUrl" id ="longUrl" placeholder="Enter Long Url">
+                </div>
+
+                <div class="field padding-bottom--24">
+                  <input type="text" name="description" id="description" placeholder="Description">
+                </div>
+
+                <label for="checkbox"><span style="font-size:20px; margin-right: 15px; margin-bottom:20px;">Do You Want Custom URL ?
+                <input type="checkbox" name="checkbox" id="checkbox"></span></label>
+
+                <div  class="field padding-bottom--24">
+                  <input type="text" name="custumUrl" id="custumUrl" placeholder="Enter the Custom Url">
+                </div>
+
+                <div class="field padding-top--24">
+                  <input type="submit" name="submit" value="Generate URL">
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+        <h1 align="center" style="padding-top:25px; padding-bottom:25px;">Search URLs</h1>
+        <div class="field padding-bottom--24">
+            <input type="text" name="description" id="myInput" onkeyup="myFunction()" placeholder="Search with Description...">
+        </div>
+
+        <h1 align="center" style="padding-top:25px; padding-bottom:25px;">SHORT LINKS</h1>
+
+
+          <table class="center" style="margin-left:auto; margin-right:auto;" id="myTable">
+            <tr>
+              <th>Description</th>
+              <th>shortUrl</th>
+              <th>NumberOfClick</th>
+              <th>collections</th>
+            </tr>
+            <% user_hash_links.forEach((item)=>{ %>
+                <tr>
+                    <td><%= item.description %></td>
+                    <td>
+                        <a href="/<%= item.shortUrl %>"><%=baseUrl%><%= item.shortUrl%></a>
+                    </td>
+                    <td><%= item.clicks %></td>
+                    <td>
+                        <form action="/change_collection" method="post">
+                            <label for="collection">collections</label>
+                            <select name="collection" id="collection" >
+                                <% user_collections.forEach((x)=>{ %>
+                                    <option value="<%= x.collections %>" <% if(x.collections == item.collections){%> selected = "selected" <%}%>><%= x.collections%></option>
+                                <% }) %>
+                            </select>
+                            <input type="hidden" name="Url" value=<%= item.shortUrl %>>
+                            <input type="hidden" name="shortUrl" value="y">
+                            <input type="submit" name="action" value="change">
+                            <input type="submit" name="action" value="delete">
+                          </form>
+                    </td>
+                </tr>
+            <% }) %>
+            <tr>
+            <tr/>
+          </table>
+
+          <h1 align="center" style="padding-top:25px; padding-bottom:25px;">Custom URLs</h1>
+
+          <table class="center mt-5" style="margin-left:auto; margin-right:auto; margin-top-10px;">
+            <tr>
+                <th>Description</th>
+                <th>shortUrl</th>
+                <th>Clicks By You</th>
+                <th>Over All Clicks</th>
+                <th>collections</th>
+            </tr>
+            <% user_custum_links.forEach((item)=>{ %>
+                <tr>
+                    <td><%= item.description %></td>
+                    <td>
+                        <a href="/app/<%= item.custumUrl %>"><%=baseUrl%>app/<%= item.custumUrl%></a>
+                    </td>
+                    <td><%= item.clicks_by_user %></td>
+                    <td><%= item.total_clicks %></td>
+                    <td>
+                        <form action="/change_collection" method="post">
+                            <label for="baskets">book mark</label>
+                            <select name="collection" id="collection">
+                                <% user_collections.forEach((x)=>{ %>
+                                    <option value="<%= x.collections %>" <% if(x.collections == item.collections){%> selected = "selected" <%}%>><%= x.collections%></option>
+                                <% }) %>
+                            </select>
+                            <input type="hidden" name="Url" value="<%= item.custumUrl %>">
+                            <input type="hidden" name="shortUrl" value="n">
+                            <input type="submit" name="action" value="change">
+                            <input type="submit" name="action" value="delete">
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+          </table>
+      </div>
+    </div>
+    
+  </div>
+
+
+
+  <h1>Book Marks</h1>
+    <form action="/addcollections" method="post">
+        <label for="baskets">book mark</label>
+        <select name="collection" id="user_collections" >
+            <% user_collections.forEach((item)=>{ %>
+                <option value="<%= item.collections %>" ><%= item.collections%></option>
+            <% }) %>
+        </select>
+        <input type="submit" name="type" value="remove" >
+        <h2>show</h2>
+        <br>
+        <label for="show">add Collection</label>
+        <input type="checkbox" name="add-checkbox" id="add-checkbox">
+        <br>
+        <input type="text" name="add_collection" id="add_collection" placeholder="New Book Mark">
+        <input type="submit" name="type"  value="add" id="add">
+    </form>
+
+
+  <script>
+    // thease are some scripts
+    const checkbox = document.getElementById('checkbox');
+    const custumUrl = document.getElementById('custumUrl');
+    checkbox.addEventListener('change',(event)=>{
+        if(checkbox.checked){
+            custumUrl.style.display = "block";
+        }else{
+            custumUrl.style.display = "none";
+        }
+    })
+    if("<%= errorMessage %>" == "UrlExist"){
+        alert("This custum Url Is Already Exists")
+    }
+
+    if("<%= errorMessage %>" == "collectionExists"){
+        alert("This Collection Already Exists")
+    }
+
+    const add_checkbox = document.getElementById('add-checkbox');
+    const add_bookmark = document.getElementById('add_collection');
+    const add = document.getElementById('add');
+    add_checkbox.addEventListener('change' , (event)=>{
+        if(add_checkbox.checked){
+            add_bookmark.style.display = "block";
+            add.style.display = "block";
+        }else{
+            add_bookmark.style.display = "none";
+            add.style.display = "none";
+        }
+    })
+
+    
+    const user_collections = document.getElementById('user_collections');
+    user_collections.addEventListener('change' , (event)=>{
+        var selectedValue = user_collections.options[user_collections.selectedIndex];
+        console.log(selectedValue.value)
+
+    })
+   
+      function myFunction() {
+          var input, filter, table, tr, td, i, txtValue;
+          input = document.getElementById("myInput");
+          filter = input.value.toUpperCase();
+          table = document.getElementById("myTable");
+          tr = table.getElementsByTagName("tr");
+          for (i = 0; i < tr.length; i++) {
+              td = tr[i].getElementsByTagName("td")[0];
+              if (td) {
+              txtValue = td.textContent || td.innerText;
+              if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                  tr[i].style.display = "";
+              } else {
+                  tr[i].style.display = "none";
+              }
+              }       
+          }
+      }
+      localStorage.clear();
+</script>
+
+</body>
+
+</html>

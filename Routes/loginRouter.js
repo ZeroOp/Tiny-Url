@@ -23,7 +23,6 @@ router.post('/' , async (req,res)=>{
     payload.errorMessage = "";
     const user = await User.findOne({'username':payload.username});
     if(user){
-        console.log(user.password);
         var result = user.password == payload.password
         if(result){
             req.session.user = user;

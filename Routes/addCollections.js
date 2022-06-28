@@ -8,10 +8,7 @@ const UserCustumLinks = require('../Schemas/UserCustumLinks');
 router.post('/',async (req,res)=>{
     const user = req.session.user;
     const payload = req.body;
-    console.log(payload)
-    console.log(user);
     if(payload.type == "add"){
-        console.log("hi")
         const user_collection = await UserCollections.findOne({
             $and:[
                 {username:user.username},
@@ -27,7 +24,6 @@ router.post('/',async (req,res)=>{
     }
     else {
        if(payload.collection != 'none'){
-            console.log("updated")
             await UserHashLinks.updateMany({
                 $and:[
                     {username:user.username},

@@ -14,9 +14,7 @@ app.set("view engine" , "ejs");
 app.set('views ' , "views");
 router.get('/' , middleware , async (req, res , next)=>{
     const user = req.session.user; 
-    console.log(req.session);
     if(req.session && req.session.addUrl != null && req.session.addUrl.longUrl){
-        console.log('There is a pending work for dash board')
         const addUrlToUsr = req.session.addUrl;
         const url_map = await UrlMaps.findOne({longUrl:addUrlToUsr.longUrl}); // we are doing it because we have to find the shortUrl
         const shortUrl = await UserHashLinks.findOne({
@@ -26,7 +24,6 @@ router.get('/' , middleware , async (req, res , next)=>{
             ]
         })
         if(shortUrl == null){
-            console.log(url_map);
             await UserHashLinks.create({
                 username:user.username,
                 shortUrl:url_map.shortUrl,
@@ -44,12 +41,10 @@ router.get('/' , middleware , async (req, res , next)=>{
     const user_collections = await UserCollections.find({username:user.username});
     const payload = {'user_hash_links':user_hash_links , 'user_custum_links':user_custum_links,'baseUrl':baseUrl , errorMessage:"" , 'user_collections':user_collections };
     
-    console.log(payload);
     
     res.render('dashboard' , payload);
 })
 router.post('/' ,middleware , async (req,res,next)=>{
-    console.log(req.body);
     const payload = req.body;
     const user = req.session.user; 
     if(payload.custumUrl){

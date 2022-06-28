@@ -20,6 +20,12 @@ app.use(bodyparser.urlencoded({extended:true}));
 const loginRouter = require('./Routes/loginRouter');
 app.use('/login' , loginRouter);
 
+
+const logoutRouter = require('./Routes/logoutRouter');
+app.use('/logout' , logoutRouter)
+
+
+
 const registerRouter = require('./Routes/registerRouter');
 app.use('/register' , registerRouter);
 
