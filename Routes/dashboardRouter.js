@@ -1,5 +1,6 @@
 const express = require('express');
 const session =require('express-session');
+const shortid = require('shortid');
 const router = express.Router();
 const middleware = require('../middleware');
 const generateHash = require('../generateHash');

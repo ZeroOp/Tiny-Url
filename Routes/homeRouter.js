@@ -29,7 +29,7 @@ router.post('/', middleware, async (req,res,next)=>{
                 return res.render('index' , payload);
             }else{
                 const newUrl = {
-                    shortUrl:generateHash(),
+                    shortUrl:await generateHash(),
                     longUrl:longUrl
                 }
                 UrlMaps.create(newUrl);
@@ -62,7 +62,6 @@ router.post('/', middleware, async (req,res,next)=>{
 })
 // all other requests will come here
 router.get('/:shortUrl',async (req,res,next)=>{
-    console.log("I got clicked")
     const user = req.session.user;
     const shortUrl = req.params.shortUrl;
     const url = await UrlMaps.findOne({'shortUrl':shortUrl});
