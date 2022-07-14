@@ -7,7 +7,7 @@ const generateHash = require('../generateHash');
 const UserHashLinks = require('../Schemas/UserHashLinks');
 const UrlMaps = require('../Schemas/UrlMaps')
 const UserCustumLinks = require('../Schemas/UserCustumLinks');
-const baseUrl = "http://tinyurl.shop/"; 
+const baseUrl = "https://tiny-url2.herokuapp.com/"; 
 
 router.get('/:custumUrl' , async (req,res)=>{
     var custumUrl = req.params.custumUrl;
