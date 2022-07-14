@@ -7,7 +7,7 @@ const generateHash = require('../hash');
 const UserHashLinks = require('../Schemas/UserHashLinks');
 const UrlMaps = require('../Schemas/UrlMaps')
 const UserCustumLinks = require('../Schemas/UserCustumLinks');
-const baseUrl = "http://tinyurl.shop/"; 
+const baseUrl = "https://tiny-url2.herokuapp.com/"; 
 const UserCollections = require("../Schemas/UserCollections");
 const app = express();
 app.set("view engine" , "ejs");
