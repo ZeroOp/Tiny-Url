@@ -7,7 +7,7 @@ const generateHash = require('../generateHash');
 const UserHashLinks = require('../Schemas/UserHashLinks');
 const UrlMaps = require('../Schemas/UrlMaps')
 const UserCustumLinks = require('../Schemas/UserCustumLinks');
-const baseUrl = "http://localhost:3000/"; 
+const baseUrl = "http://tinyurl.shop/"; 
 
 router.get('/:custumUrl' , async (req,res)=>{
     var custumUrl = req.params.custumUrl;

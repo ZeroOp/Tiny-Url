@@ -47,6 +47,6 @@ const ChangeCollectionRounter = require('./Routes/ChangeCollectionRoutner');
 app.use('/change_collection' , ChangeCollectionRounter);
 
 // making node server to listen at a port
-app.listen(process.env.PORT || port, ()=>{
+app.listen(port, ()=>{
     console.log('server is running');
 })

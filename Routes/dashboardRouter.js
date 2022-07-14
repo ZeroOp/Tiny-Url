@@ -3,11 +3,11 @@ const session =require('express-session');
 const shortid = require('shortid');
 const router = express.Router();
 const middleware = require('../middleware');
-const generateHash = require('../generateHash');
+const generateHash = require('../hash');
 const UserHashLinks = require('../Schemas/UserHashLinks');
 const UrlMaps = require('../Schemas/UrlMaps')
 const UserCustumLinks = require('../Schemas/UserCustumLinks');
-const baseUrl = "http://localhost:3000/"; 
+const baseUrl = "http://tinyurl.shop/"; 
 const UserCollections = require("../Schemas/UserCollections");
 const app = express();
 app.set("view engine" , "ejs");
@@ -94,7 +94,7 @@ router.post('/' ,middleware , async (req,res,next)=>{
         }
     }else{
         await UrlMaps.create({
-            shortUrl:generateHash(),
+            shortUrl:await generateHash(),
             longUrl:payload.longUrl
         })
         .then((link)=>{
